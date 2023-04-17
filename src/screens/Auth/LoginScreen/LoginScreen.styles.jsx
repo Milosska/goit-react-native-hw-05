@@ -10,6 +10,7 @@ export default styles = StyleSheet.create({
     flex: 0,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#ffffff",

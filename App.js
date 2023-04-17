@@ -32,7 +32,7 @@ export default function App() {
     return null;
   }
 
-  // End of Fonta instalation
+  // End of Fonts instalation
 
   return (
     <NavigationContainer style={styles.container}>

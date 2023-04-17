@@ -1,5 +1,4 @@
 import { View, Text, ImageBackground, ScrollView } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { useOrientation } from "../../../hooks/useOrientation";
 import { indicateBgImage } from "../../../helpers/indicateBgImage/indicateBgImage";
 import { ImagePickerElem } from "../../../components/ImagePicker/ImagePicker";

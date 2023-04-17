@@ -15,6 +15,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    paddingHorizontal: 16,
   },
   contentThumb: {
     position: "relative",

@@ -4,7 +4,13 @@ import styles from "./PostsScreen.styles";
 const PostsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>PostsScreen</Text>
+      <View style={styles.userData}>
+        <View style={styles.imagePlaceholder} />
+        <View>
+          <Text style={styles.username}>User Name</Text>
+          <Text style={styles.email}>email@mail.com</Text>
+        </View>
+      </View>
     </View>
   );
 };

@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export default styles = StyleSheet.create({
   container: {
     position: "relative",
-    marginHorizontal: 16,
   },
   input: {
     backgroundColor: "#F6F6F6",
