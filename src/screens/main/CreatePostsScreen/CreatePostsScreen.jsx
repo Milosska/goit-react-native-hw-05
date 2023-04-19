@@ -1,18 +1,38 @@
-import {
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { useState } from "react";
+import { ScrollView, View, TextInput } from "react-native";
 import styles from "./CreatePostsScreen.styles";
 import { useOrientation } from "../../../hooks/useOrientation";
-import { FontAwesome } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { StyledButton } from "../../../components/StyledButton/StyledButton";
+import { CameraEl } from "../../../components/Camera/Camera";
+
+const initialState = {
+  title: "",
+  location: "",
+};
 
 const CreatePostsScreen = () => {
+  const [photo, setPhoto] = useState(null);
+  const [data, setData] = useState(initialState);
   let orientation = useOrientation();
+
+  const handleValidation = () => {
+    if (!photo || !data.title) {
+      return false;
+    }
+    return true;
+  };
+
+  const handlePublish = () => {
+    console.log(data.title);
+
+    if (!data.title.trim()) {
+      return;
+    }
+
+    setPhoto(null);
+    setData(initialState);
+  };
 
   return (
     <ScrollView
@@ -21,16 +41,13 @@ const CreatePostsScreen = () => {
         flex: orientation === "landscape" ? 0 : 1,
       }}
     >
-      <View style={styles.camera}>
-        <TouchableOpacity style={styles.cameraBnt}>
-          <FontAwesome name="camera" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.cameraText}>Загрузите фото</Text>
+      <CameraEl photo={photo} setPhoto={setPhoto} />
       <TextInput
+        value={data.title}
         style={styles.input}
         placeholder="Название..."
         placeholderTextColor="#BDBDBD"
+        onChangeText={(e) => setData((prev) => ({ ...prev, title: e }))}
       />
       <View style={styles.inputThumb}>
         <SimpleLineIcons
@@ -45,7 +62,11 @@ const CreatePostsScreen = () => {
           placeholderTextColor="#BDBDBD"
         />
       </View>
-      <StyledButton textContent="Опубликовать" />
+      <StyledButton
+        textContent="Опубликовать"
+        disabled={handleValidation() ? false : true}
+        onPress={handlePublish}
+      />
     </ScrollView>
   );
 };
