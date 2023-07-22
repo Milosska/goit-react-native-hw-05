@@ -25,7 +25,13 @@ const CommentsScreen = ({ route }) => {
   };
 
   const onSubmit = (e) => {
-    setComments((prevState) => [...prevState, currentComment]);
+    const formedComment = {
+      author: "Milosska",
+      message: currentComment,
+      createdAt: new Date(),
+    };
+
+    setComments((prevState) => [...prevState, formedComment]);
     setDisabled(true);
     setCurrentComment(null);
   };
