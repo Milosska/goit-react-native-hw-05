@@ -1,11 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import PostsScreen from "../PostsScreen/PostsScreen";
+
+import PostNestedScreens from "../PostsNestedScreens/PostNestedScreens";
 import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
+
 import { Feather } from "@expo/vector-icons";
-import { LogOutIcon } from "../../../components/LogOutIcon/LogOutIcon";
 import styles from "./Home.styles";
 
 const Home = () => {
@@ -15,15 +16,10 @@ const Home = () => {
   return (
     <BottomTab.Navigator>
       <BottomTab.Screen
-        name="Публикации"
-        component={PostsScreen}
+        name="Посты"
+        component={PostNestedScreens}
         options={{
-          headerTitleAlign: "center",
-          headerRight: () => (
-            <LogOutIcon customStyle={{ paddingHorizontal: 10, bottom: 11 }} />
-          ),
-          headerStyle: styles.header,
-          headerTitleContainerStyle: styles.headerTitle,
+          headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color }) => (
             <Feather name="grid" focused={focused} size={24} color={color} />

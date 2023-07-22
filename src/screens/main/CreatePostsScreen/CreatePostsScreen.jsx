@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView, View, TextInput } from "react-native";
-import styles from "./CreatePostsScreen.styles";
+import { useNavigation } from "@react-navigation/native";
 import { useOrientation } from "../../../hooks/useOrientation";
+
+import * as Location from "expo-location";
+import { fetchGeocoding } from "../../../helpers/fetchGeocoding";
+
 import { SimpleLineIcons } from "@expo/vector-icons";
+import styles from "./CreatePostsScreen.styles";
 import { StyledButton } from "../../../components/StyledButton/StyledButton";
 import { CameraEl } from "../../../components/Camera/Camera";
 
@@ -13,23 +18,56 @@ const initialState = {
 
 const CreatePostsScreen = () => {
   const [photo, setPhoto] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
   const [data, setData] = useState(initialState);
   let orientation = useOrientation();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        return;
+      }
+
+      const {
+        coords: { latitude, longitude },
+      } = await Location.getCurrentPositionAsync({});
+
+      setCurrentLocation({ latitude, longitude });
+    })();
+  }, []);
+
+  useEffect(() => {
+    const handleGeocoding = async (data) => {
+      const result = await fetchGeocoding(data);
+      setData((prevState) => ({
+        ...prevState,
+        location: { ...currentLocation, decoded: result },
+      }));
+    };
+
+    if (currentLocation) {
+      handleGeocoding(currentLocation);
+    }
+  }, [currentLocation]);
 
   const handleValidation = () => {
-    if (!photo || !data.title) {
+    if (!photo || !data.title || !data.location) {
       return false;
     }
     return true;
   };
 
   const handlePublish = () => {
-    console.log(data.title);
+    const newPost = { ...data, photo: photo };
 
     if (!data.title.trim()) {
       return;
     }
 
+    navigation.navigate("Публикации", newPost);
     setPhoto(null);
     setData(initialState);
   };
@@ -57,9 +95,16 @@ const CreatePostsScreen = () => {
           style={styles.locationIcon}
         />
         <TextInput
+          value={data.location?.decoded}
           style={{ ...styles.input, paddingHorizontal: 36 }}
           placeholder="Местность..."
           placeholderTextColor="#BDBDBD"
+          onChangeText={(e) =>
+            setData((prev) => ({
+              ...prev,
+              location: { ...currentLocation, decoded: e },
+            }))
+          }
         />
       </View>
       <StyledButton
