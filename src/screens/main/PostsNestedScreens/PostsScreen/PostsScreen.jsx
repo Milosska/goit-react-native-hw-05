@@ -21,12 +21,16 @@ const PostsScreen = ({ route }) => {
     }
   }, [route.params]);
 
-  const handleComments = () => {
-    navigation.navigate("Комментарии");
+  const handleComments = (data) => {
+    navigation.navigate("Комментарии", data);
   };
 
-  const handleLocation = () => {
-    navigation.navigate("Локация");
+  const handleLocation = (data) => {
+    if (!data.latitude || !data.longitude) {
+      return;
+    }
+
+    navigation.navigate("Локация", data);
   };
 
   const handleLocationLength = (location) => {
@@ -67,7 +71,7 @@ const PostsScreen = ({ route }) => {
             <Text style={styles.postLabel}>{item.title}</Text>
             <View style={styles.postData}>
               <TouchableOpacity
-                onPress={handleComments}
+                onPress={() => handleComments(item.photo)}
                 style={styles.postComments}
               >
                 <Feather name="message-circle" size={24} color="#BDBDBD" />
@@ -75,7 +79,7 @@ const PostsScreen = ({ route }) => {
               </TouchableOpacity>
               <View style={styles.postLocation}>
                 <TouchableOpacity
-                  onPress={handleLocation}
+                  onPress={() => handleLocation(item.location)}
                   style={styles.postComments}
                 >
                   <Feather name="map-pin" size={24} color="#BDBDBD" />

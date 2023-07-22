@@ -5,12 +5,16 @@ import CommentsScreen from "./CommentsScreen/CommentsScreen";
 import MapScreen from "./MapScreen/MapScreen";
 
 import { LogOutIcon } from "../../../components/LogOutIcon/LogOutIcon";
+import styles from "./PostNestedScreens.styles";
 
-const PostNestedScreens = () => {
+const PostNestedScreens = ({ route }) => {
   const PostStack = createStackNavigator();
 
   return (
-    <PostStack.Navigator initialRouteName="Публикации">
+    <PostStack.Navigator
+      initialRouteName="Публикации"
+      screenOptions={{ tabBarStyle: { display: "none" } }}
+    >
       <PostStack.Screen
         name="Публикации"
         component={PostsScreen}

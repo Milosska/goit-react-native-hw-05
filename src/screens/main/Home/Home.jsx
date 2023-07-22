@@ -9,6 +9,8 @@ import ProfileScreen from "../ProfileScreen/ProfileScreen";
 import { Feather } from "@expo/vector-icons";
 import styles from "./Home.styles";
 
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+
 const Home = () => {
   const BottomTab = createBottomTabNavigator();
   const navigation = useNavigation();
@@ -18,14 +20,21 @@ const Home = () => {
       <BottomTab.Screen
         name="Посты"
         component={PostNestedScreens}
-        options={{
+        options={({ route }) => ({
+          tabBarStyle: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+            if (routeName === "Комментарии") {
+              return { display: "none" };
+            }
+            return;
+          })(route),
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color }) => (
             <Feather name="grid" focused={focused} size={24} color={color} />
           ),
           tabBarActiveTintColor: "#FF6C00",
-        }}
+        })}
       />
       <BottomTab.Screen
         name="Создать публикацию"

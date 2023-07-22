@@ -2,7 +2,7 @@ import axios from "axios";
 
 const GEOCODING_API_KEY = "930c680544094e769f012774f7b6509e";
 
-export const fetchGeocoding = async ({ latitude, longitude }) => {
+export const fetchReverseGeocoding = async ({ latitude, longitude }) => {
   try {
     const response = await axios.get(
       `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&language=en&key=${GEOCODING_API_KEY}`

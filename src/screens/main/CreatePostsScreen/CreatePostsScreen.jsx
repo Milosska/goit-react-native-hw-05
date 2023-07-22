@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useOrientation } from "../../../hooks/useOrientation";
 
 import * as Location from "expo-location";
-import { fetchGeocoding } from "../../../helpers/fetchGeocoding";
+import { fetchReverseGeocoding } from "../../../helpers/fetchGeocoding";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import styles from "./CreatePostsScreen.styles";
@@ -41,7 +41,7 @@ const CreatePostsScreen = () => {
 
   useEffect(() => {
     const handleGeocoding = async (data) => {
-      const result = await fetchGeocoding(data);
+      const result = await fetchReverseGeocoding(data);
       setData((prevState) => ({
         ...prevState,
         location: { ...currentLocation, decoded: result },
@@ -53,6 +53,13 @@ const CreatePostsScreen = () => {
     }
   }, [currentLocation]);
 
+  const handleLocationChange = (e) => {
+    setData((prev) => ({
+      ...prev,
+      location: { ...currentLocation, decoded: e },
+    }));
+  };
+
   const handleValidation = () => {
     if (!photo || !data.title || !data.location) {
       return false;
@@ -60,7 +67,7 @@ const CreatePostsScreen = () => {
     return true;
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     const newPost = { ...data, photo: photo };
 
     if (!data.title.trim()) {
@@ -99,12 +106,7 @@ const CreatePostsScreen = () => {
           style={{ ...styles.input, paddingHorizontal: 36 }}
           placeholder="Местность..."
           placeholderTextColor="#BDBDBD"
-          onChangeText={(e) =>
-            setData((prev) => ({
-              ...prev,
-              location: { ...currentLocation, decoded: e },
-            }))
-          }
+          onChangeText={handleLocationChange}
         />
       </View>
       <StyledButton
